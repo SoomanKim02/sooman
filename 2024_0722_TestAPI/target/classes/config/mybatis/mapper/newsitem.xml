@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="newsItem">
+
+   <!-- 전체조회 -->
+   <select id="board_list" resultType="board">
+    
+   </select>
+ 
+ <!-- b_idx에 해당되는 게시물 1건 얻어오기 -->
+ <select id="board_one" parameterType="int"  resultType="board">
+ 	select * from board where b_idx=#{ b_idx }
+ </select>
+ 
+ 
+ 
+	<!-- 새글쓰기 -->
+	<insert id="board_insert" parameterType="board">
+		insert into board values(seq_board_idx.nextVal,
+                         #{ b_subject },
+                         #{ b_content },
+                         #{ b_ip },
+                         sysdate,
+                         0,
+                         'y',
+                         #{ mem_idx },
+                         #{ mem_name },
+                         seq_board_idx.currVal,
+                         0,
+                         0
+                         )
+	</insert>  
+	
+	<!-- 조회수 증가 -->
+	<update id="board_update_readhit" parameterType="int">
+		update board set b_readhit = b_readhit + 1 where b_idx=#{b_idx}	
+	</update>
+	
+	<!-- 기준글 보다 step이 큰 게시물의 step을 1씩 증가 : 답글의 전처리작업-->
+	<update id="board_update_step" parameterType="board">
+		update board set b_step = b_step +1 where b_ref =#{b_ref} and b_step > #{b_step} <!-- 같은 그룹에 있으면서 기준글보다 스텝이 큰 게시물  -->
+	</update>
+	
+	<!-- 답글쓰기 -->
+	<insert id="board_reply" parameterType="board">
+		insert into board values(seq_board_idx.nextVal,
+                         #{ b_subject },
+                         #{ b_content },
+                         #{ b_ip },
+                         sysdate,
+                         0,
+                         'y',
+                         #{ mem_idx },
+                         #{ mem_name },
+                         #{ b_ref },
+                         #{ b_step },
+                         #{ b_depth }
+                         )
+	</insert>  
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

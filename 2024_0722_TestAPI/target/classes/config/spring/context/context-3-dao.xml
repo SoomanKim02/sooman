@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+					http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+					http://www.springframework.org/schema/context
+					http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	
+	
+	
+	<!-- VisitDao 생성관련 코드 
+	                                      autowire="byType"   <- Type이 일치하는 객체 연결
+	                                      autowire="byName"   <- Name이 일치하는 객체 연결
+	                                      autowire="default"  <- 1.byType => 2.byName
+	-->
+	<context:component-scan base-package="dao" />
+	<!-- Autowired 지원속성  -->
+	<context:annotation-config/>
+	
+	<!-- MemberDao생성  -->
+	<bean id="newsitem_dao"  class="dao.NewsItemDaoImpl">
+	   <property name="sqlSession"  ref="sqlSession"/>
+	</bean>
+   
+	
+	
+</beans>
